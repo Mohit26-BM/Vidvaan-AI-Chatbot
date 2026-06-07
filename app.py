@@ -7,6 +7,8 @@ import re
 import json
 from flask import Flask, render_template, request, jsonify, redirect, url_for, flash, Response, stream_with_context
 from flask_login import login_user, logout_user, login_required, current_user
+from flask_limiter import Limiter
+from flask_limiter.util import get_remote_address
 from dotenv import load_dotenv
 
 # Import configuration
@@ -62,6 +64,19 @@ if env == "production":
 
 # Initialize database and login manager
 init_db(app)
+
+# Rate limiter — keyed by user ID for auth users, IP for anonymous
+def _rate_limit_key():
+    if current_user.is_authenticated:
+        return f"user:{current_user.id}"
+    return get_remote_address()
+
+limiter = Limiter(
+    key_func=get_remote_address,
+    app=app,
+    default_limits=[],
+    storage_uri="memory://",
+)
 
 
 # =============================
@@ -136,6 +151,7 @@ def logout():
 
 
 @app.route("/auth/login", methods=["POST"])
+@limiter.limit("10 per minute; 50 per hour")
 def auth_login():
     """Handle login request"""
     try:
@@ -175,6 +191,7 @@ def auth_login():
 
 
 @app.route("/auth/signup", methods=["POST"])
+@limiter.limit("5 per hour")
 def auth_signup():
     """Handle signup request"""
     try:
@@ -496,6 +513,7 @@ def _stream_with_search(chat_history, conv_id, captured_input, user_message_id=N
 
 @app.route("/api/chat/stream", methods=["POST"])
 @login_required
+@limiter.limit("30 per minute", key_func=_rate_limit_key)
 def chat_stream():
     """Streaming chat — sends response as SSE chunks"""
     data = request.get_json()
@@ -565,6 +583,7 @@ DEMO_MESSAGE_LIMIT = 10
 
 
 @app.route("/api/demo/chat", methods=["POST"])
+@limiter.limit("20 per hour")
 def demo_chat():
     """Demo chat — no login, no DB, in-memory history only"""
     try:
@@ -608,6 +627,7 @@ def demo_chat():
 
 
 @app.route("/api/demo/chat/stream", methods=["POST"])
+@limiter.limit("20 per hour")
 def demo_chat_stream():
     """Demo streaming chat — no login, no DB"""
     data = request.get_json()
@@ -822,6 +842,15 @@ def update_user_settings():
 # =============================
 # 🔹 ERROR HANDLERS
 # =============================
+
+
+@app.errorhandler(429)
+def rate_limited(error):
+    return jsonify({
+        "error": True,
+        "error_type": "rate_limit",
+        "message": "Too many requests. Please slow down and try again shortly.",
+    }), 429
 
 
 @app.errorhandler(404)
