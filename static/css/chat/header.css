@@ -1,0 +1,299 @@
+/* header.css */
+
+.chat-header {
+    background: var(--bg-sidebar);
+    padding: 14px 20px;
+    border-bottom: 1px solid var(--border);
+    flex-shrink: 0;
+}
+
+.header-content {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.bot-avatar {
+    width: 38px;
+    height: 38px;
+    background: var(--accent);
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    flex-shrink: 0;
+}
+
+.bot-avatar svg {
+    width: 20px;
+    height: 20px;
+}
+
+.header-text h2 {
+    font-size: 16px;
+    font-weight: 600;
+    color: var(--text-primary);
+    letter-spacing: -0.01em;
+}
+
+.status {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    font-size: 12px;
+    color: var(--text-secondary);
+    margin-top: 2px;
+}
+
+.status-dot {
+    width: 7px;
+    height: 7px;
+    background: var(--success);
+    border-radius: 50%;
+    animation: pulse 2s infinite;
+}
+
+.header-actions {
+    margin-left: auto;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+/* Usage badge */
+.usage-badge {
+    display: none;
+    align-items: center;
+    gap: 5px;
+    padding: 5px 10px;
+    background: var(--bg-surface);
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    font-size: 11px;
+    font-weight: 600;
+    color: var(--text-secondary);
+    cursor: default;
+    transition: border-color 0.3s, color 0.3s;
+    font-variant-numeric: tabular-nums;
+    white-space: nowrap;
+}
+
+.usage-badge.visible { display: flex; }
+
+.usage-badge svg {
+    width: 11px;
+    height: 11px;
+    flex-shrink: 0;
+}
+
+.usage-label {
+    font-weight: 400;
+    color: var(--text-muted);
+}
+
+/* Color states based on remaining requests */
+.usage-badge.ok    { color: var(--success); border-color: rgba(52,211,153,0.25); }
+.usage-badge.ok svg { color: var(--success); }
+.usage-badge.warn  { color: var(--warning); border-color: rgba(251,191,36,0.3); }
+.usage-badge.warn svg { color: var(--warning); }
+.usage-badge.low   { color: var(--error);   border-color: rgba(248,113,113,0.35); }
+.usage-badge.low svg { color: var(--error); }
+
+/* Quota info wrapper + popover */
+.quota-info-wrap {
+    position: relative;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+}
+
+.quota-info-btn {
+    background: transparent !important;
+    border: none !important;
+    color: var(--text-muted);
+    cursor: pointer;
+    padding: 3px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: auto !important;
+    height: auto !important;
+    box-shadow: none !important;
+    transition: color 0.15s;
+}
+.quota-info-btn:hover { color: var(--text-secondary) !important; transform: none !important; }
+.quota-info-btn svg { width: 14px; height: 14px; }
+
+.quota-popover {
+    display: none;
+    position: absolute;
+    top: calc(100% + 10px);
+    right: 0;
+    width: 300px;
+    background: var(--bg-elevated);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-md);
+    box-shadow: 0 12px 40px rgba(0,0,0,0.5);
+    padding: 16px;
+    z-index: 500;
+    animation: fadeIn 0.15s ease-out;
+}
+.quota-popover.show { display: block; }
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(-4px); }
+    to   { opacity: 1; transform: translateY(0); }
+}
+
+.quota-popover-title {
+    font-size: 0.8rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: var(--text-muted);
+    margin-bottom: 12px;
+}
+
+.quota-popover-section {
+    margin-bottom: 12px;
+}
+.quota-popover-section:last-child { margin-bottom: 0; }
+
+.quota-popover-section strong {
+    display: block;
+    font-size: 0.825rem;
+    font-weight: 600;
+    color: var(--text-primary);
+    margin-bottom: 3px;
+}
+
+.quota-popover-section p {
+    font-size: 0.775rem;
+    color: var(--text-secondary);
+    line-height: 1.55;
+    margin: 0;
+}
+
+.quota-popover-section em {
+    color: var(--accent-light);
+    font-style: normal;
+    font-weight: 600;
+}
+
+/* Temporary chat toggle button */
+.temp-chat-btn {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding: 6px 12px;
+    width: auto !important;
+    height: auto !important;
+    background: var(--bg-surface) !important;
+    border: 1px solid var(--border) !important;
+    border-radius: 20px !important;
+    color: var(--text-secondary);
+    font-size: 12px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    box-shadow: none !important;
+}
+
+.temp-chat-btn svg {
+    width: 14px !important;
+    height: 14px !important;
+    flex-shrink: 0;
+}
+
+.temp-chat-btn:hover:not(:disabled) {
+    background: var(--bg-elevated) !important;
+    color: var(--text-primary);
+    border-color: rgba(255,255,255,0.12) !important;
+    transform: none !important;
+    box-shadow: none !important;
+}
+
+.temp-chat-btn.active {
+    background: rgba(251, 191, 36, 0.12) !important;
+    border-color: rgba(251, 191, 36, 0.4) !important;
+    color: #fbbf24 !important;
+}
+
+.temp-chat-btn.active:hover:not(:disabled) {
+    background: rgba(251, 191, 36, 0.18) !important;
+}
+
+/* Temporary mode banner */
+.temp-banner {
+    display: none;
+    align-items: center;
+    gap: 8px;
+    margin-top: 10px;
+    padding: 8px 12px;
+    background: rgba(251, 191, 36, 0.08);
+    border: 1px solid rgba(251, 191, 36, 0.25);
+    border-radius: var(--radius-sm);
+    color: #fbbf24;
+    font-size: 12px;
+    line-height: 1.4;
+}
+
+.temp-banner.show {
+    display: flex;
+}
+
+.temp-banner svg {
+    width: 14px;
+    height: 14px;
+    flex-shrink: 0;
+}
+
+/* Sidebar dimmed in temp mode */
+.sidebar.temp-dimmed {
+    opacity: 0.35;
+    pointer-events: none;
+    user-select: none;
+}
+
+/* Temp welcome message */
+.temp-welcome {
+    background: rgba(251, 191, 36, 0.06) !important;
+    border: 1px solid rgba(251, 191, 36, 0.2) !important;
+    color: #fbbf24 !important;
+}
+
+/* Mobile menu button */
+.mobile-menu-btn {
+    display: none;
+    background: transparent !important;
+    border: none !important;
+    color: var(--text-secondary) !important;
+    cursor: pointer;
+    padding: 6px;
+    border-radius: var(--radius-sm);
+    transition: background 0.2s ease;
+    width: auto !important;
+    height: auto !important;
+    box-shadow: none !important;
+}
+
+.mobile-menu-btn:hover {
+    background: var(--bg-surface) !important;
+    color: var(--text-primary) !important;
+    transform: none !important;
+}
+
+.mobile-menu-btn svg {
+    width: 20px !important;
+    height: 20px !important;
+}
+
+@media (max-width: 768px) {
+    .mobile-menu-btn {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+}

@@ -1,0 +1,10 @@
+{
+  "extends": [
+    "development"
+  ],
+  "hints": {
+    "compat-api/css": "off",
+    "performance/css-keyframes": "off",
+    "performance/css-transforms": "off"
+  }
+}

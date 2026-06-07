@@ -1,0 +1,120 @@
+{% extends "layouts/auth-base.html" %}
+{% block title %}Sign In - AI Assistant{% endblock %}
+{% block styles %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/auth/login.css') }}">
+{% endblock %}
+{% block content %}
+<div class="auth-container">
+
+  <!-- ── Left panel ────────────────────────────────── -->
+  <div class="auth-visual">
+    <div class="visual-content">
+
+      <!-- Brand -->
+      <div class="brand">
+        <div class="brand-icon">
+          <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 24 24">
+            <path d="M2 3h20v14H6l-4 4V3z"/>
+          </svg>
+        </div>
+        <span class="brand-name">AI Assistant</span>
+      </div>
+
+      <!-- Headline -->
+      <h1 class="visual-headline">Your AI,<br><span>always ready.</span></h1>
+      <p class="visual-sub">Ask anything — get clear, markdown-formatted answers with code, lists, and more.</p>
+
+      <!-- Animated chat preview -->
+      <div class="chat-preview">
+        <div class="preview-bubble">
+          <div class="bubble-avatar">AI</div>
+          <div class="bubble-text">Hi! I can help with code, writing, analysis, and more. What are you working on?</div>
+        </div>
+        <div class="preview-bubble user-bubble">
+          <div class="bubble-avatar">U</div>
+          <div class="bubble-text">Can you write a Python function to parse JSON from an API?</div>
+        </div>
+        <div class="preview-bubble">
+          <div class="bubble-avatar">AI</div>
+          <div class="bubble-text">Sure! Here's a clean implementation with error handling...</div>
+        </div>
+        <div class="preview-bubble user-bubble">
+          <div class="bubble-avatar">U</div>
+          <div class="bubble-text">Perfect, can you add retry logic too?</div>
+        </div>
+      </div>
+
+      <!-- Feature bullets -->
+      <div class="features">
+        <div class="feature-item"><span class="feature-dot"></span>Markdown &amp; syntax-highlighted code responses</div>
+        <div class="feature-item"><span class="feature-dot"></span>Full conversation history, saved automatically</div>
+        <div class="feature-item"><span class="feature-dot"></span>Temporary chat mode for private sessions</div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ── Right panel ───────────────────────────────── -->
+  <div class="auth-form-container">
+    <div class="auth-form">
+
+      <!-- Mobile-only brand -->
+      <div class="form-brand">
+        <div class="form-brand-icon">
+          <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 24 24">
+            <path d="M2 3h20v14H6l-4 4V3z"/>
+          </svg>
+        </div>
+        <span class="form-brand-name">AI Assistant</span>
+      </div>
+
+      <div class="form-header">
+        <h2>Welcome back</h2>
+        <p>Sign in to continue your conversations</p>
+      </div>
+
+      <form method="POST" id="login-form">
+        <div class="form-group">
+          <label for="email">Email</label>
+          <input type="email" id="email" name="email"
+                 placeholder="you@example.com" required autocomplete="email">
+        </div>
+        <div class="form-group">
+          <div class="label-row">
+            <label for="password">Password</label>
+            <a href="#" class="forgot-link">Forgot password?</a>
+          </div>
+          <input type="password" id="password" name="password"
+                 placeholder="••••••••" required autocomplete="current-password">
+        </div>
+        <div class="form-group checkbox-group">
+          <label class="checkbox-label">
+            <input type="checkbox" name="remember">
+            <span class="checkbox-text">Keep me signed in</span>
+          </label>
+        </div>
+        <button type="submit" id="submit-btn" class="submit-btn">Sign in</button>
+      </form>
+
+      <div class="form-footer">
+        <p>No account? <a href="{{ url_for('signup_page') }}">Create one free</a></p>
+      </div>
+
+      <div class="divider"><span>or</span></div>
+
+      <a href="{{ url_for('demo_page') }}" class="demo-btn">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <polygon points="5 3 19 12 5 21 5 3"/>
+        </svg>
+        Try the demo — no account needed
+      </a>
+
+    </div>
+  </div>
+
+</div>
+<div id="toast" class="toast"></div>
+{% endblock %}
+{% block scripts %}
+<script type="module" src="{{ url_for('static', filename='js/auth/login.js') }}"></script>
+{% endblock %}

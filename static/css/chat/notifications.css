@@ -1,0 +1,70 @@
+/* notifications.css */
+
+.error-notification {
+    position: fixed;
+    top: 20px;
+    right: -400px;  /* ✅ Start off-screen */
+    background: rgba(15, 23, 42, 0.95);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(239, 68, 68, 0.5);
+    border-radius: 12px;
+    padding: 16px 20px;
+    max-width: 400px;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+    z-index: 1000;
+    opacity: 0;
+    transition: all 0.3s ease;
+}
+
+.error-notification.show {
+    right: 20px;  /* ✅ Slide into view */
+    opacity: 1;
+}
+
+.notification-content {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    color: #fca5a5;
+}
+
+.notification-content svg {
+    width: 24px;
+    height: 24px;
+    flex-shrink: 0;
+    margin-top: 2px;
+}
+
+.notification-content span {
+    flex: 1;
+    font-size: 14px;
+    line-height: 1.5;
+}
+
+/* Rate Limit Notification */
+.rate-limit-notification {
+    border-color: rgba(251, 191, 36, 0.5);
+}
+
+.rate-limit-notification .notification-content {
+    color: #fbbf24;
+    flex-direction: column;
+    align-items: flex-start;
+}
+
+.rate-limit-notification .notification-content > div {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.rate-limit-notification strong {
+    font-size: 15px;
+    font-weight: 600;
+}
+
+.rate-limit-notification p {
+    margin: 0;
+    font-size: 13px;
+    opacity: 0.9;
+}

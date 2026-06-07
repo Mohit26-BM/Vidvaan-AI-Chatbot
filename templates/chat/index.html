@@ -1,0 +1,211 @@
+{% extends "layouts/base.html" %}
+{% block title %}Vidvaan{% endblock %}
+{% block styles %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/chat/layout.css') }}">
+<link rel="stylesheet" href="{{ url_for('static', filename='css/chat/main.css') }}">
+<link rel="stylesheet" href="{{ url_for('static', filename='css/sidebar.css') }}">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github-dark.min.css">
+{% endblock %}
+{% block content %}
+<div class="app-container">
+   <!-- Sidebar -->
+   <aside class="sidebar" id="sidebar">
+      <!-- Sidebar Header -->
+      <div class="sidebar-header">
+         <button class="new-chat-btn" id="new-chat-btn">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/>
+            </svg>
+            New Chat
+         </button>
+      </div>
+      <!-- Conversations List -->
+      <div class="conversations-container">
+         <div id="conversations-list"></div>
+      </div>
+      <!-- Sidebar Footer -->
+      <div class="sidebar-footer">
+         <div class="user-profile">
+            <div class="user-avatar" id="user-avatar">
+               {{ current_user.username[0].upper() }}
+            </div>
+            <div class="user-info">
+               <div class="user-name">{{ current_user.username }}</div>
+               <div class="user-email">{{ current_user.email }}</div>
+            </div>
+            <button class="settings-btn" id="settings-btn" title="Custom instructions">
+               <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"/><circle cx="12" cy="12" r="3"/>
+               </svg>
+            </button>
+            <button class="logout-btn" id="logout-btn" title="Logout">
+               <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"/>
+               </svg>
+            </button>
+         </div>
+      </div>
+   </aside>
+   <!-- Main Chat Area -->
+   <main class="chat-main">
+      <div class="chat-container">
+         <div class="chat-header">
+            <div class="header-content">
+               <button class="mobile-menu-btn" id="mobile-menu-btn" type="button" title="Toggle menu">
+                  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/>
+                  </svg>
+               </button>
+               <div class="bot-avatar">
+                  <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 24 24">
+                     <path d="M2 3h20v14H6l-4 4V3z"/>
+                  </svg>
+               </div>
+               <div class="header-text">
+                  <h2>Vidvaan</h2>
+                  <span class="status">
+                  <span class="status-dot"></span>
+                  Online
+                  </span>
+               </div>
+               <div class="header-actions">
+                  <div class="quota-info-wrap">
+                     <div class="usage-badge" id="usage-badge" aria-label="API quota">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
+                           <path d="M13 2L4.09 12.97 12 13l-1 9 8.91-10.97L12 11z"/>
+                        </svg>
+                        <span id="usage-req">--</span>
+                        <span class="usage-label">req left</span>
+                     </div>
+                     <button class="quota-info-btn" id="quota-info-btn" title="About API quota" type="button">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                           <circle cx="12" cy="12" r="10"/><path stroke-linecap="round" d="M12 16v-4M12 8h.01"/>
+                        </svg>
+                     </button>
+                     <div class="quota-popover" id="quota-popover">
+                        <div class="quota-popover-title">API Quota Explained</div>
+                        <div class="quota-popover-section">
+                           <strong>Requests left</strong>
+                           <p>API calls remaining this minute. Each message you send uses 2 calls — one to detect if web search is needed, one for the response. Resets every 60 seconds.</p>
+                        </div>
+                        <div class="quota-popover-section">
+                           <strong>Tokens</strong>
+                           <p>Text is measured in tokens (~4 chars = 1 token). Each exchange uses ~750 tokens. Limit: <em>6,000/min</em> and <em>500,000/day</em> (~650 messages per day).</p>
+                        </div>
+                        <div class="quota-popover-section">
+                           <strong>When to start a new chat</strong>
+                           <p>Switch to a new chat when changing topics. The last 6 messages are always re-sent as context — older ones are dropped automatically. A fresh chat = fewer tokens per message.</p>
+                        </div>
+                     </div>
+                  </div>
+                  <button class="temp-chat-btn" id="temp-chat-btn" type="button" title="Toggle temporary chat — messages won't be saved">
+                     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M13.875 18.825A10.05 10.05 0 0112 19c-4.478 0-8.268-2.943-9.543-7a9.97 9.97 0 011.563-3.029m5.858.908a3 3 0 114.243 4.243M9.878 9.878l4.242 4.242M9.88 9.88l-3.29-3.29m7.532 7.532l3.29 3.29M3 3l3.59 3.59m0 0A9.953 9.953 0 0112 5c4.478 0 8.268 2.943 9.543 7a10.025 10.025 0 01-4.132 5.411m0 0L21 21"/>
+                     </svg>
+                     <span>Temporary</span>
+                  </button>
+               </div>
+            </div>
+            <div class="temp-banner" id="temp-banner">
+               <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/>
+               </svg>
+               Temporary chat — this conversation won't be saved to your history
+            </div>
+         </div>
+         <div id="chat-box" class="chat-box">
+            <div class="welcome-message">
+               <div class="bot-msg">
+                  <div class="message-content">
+                     <strong>Vidvaan</strong>
+                     <p>Welcome! I'm Vidvaan, your personal AI assistant. How can I help you today?</p>
+                  </div>
+               </div>
+            </div>
+         </div>
+         <div class="input-area">
+            <div class="input-row">
+               <textarea
+                  id="user-input"
+                  placeholder="Type your message here... (Shift+Enter for new line)"
+                  maxlength="2000"
+                  rows="1"
+                  ></textarea>
+               <button type="button" onclick="sendMessage()" id="send-btn" aria-label="Send message">
+                  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
+                     <path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z"/>
+                  </svg>
+               </button>
+            </div>
+            <div id="char-counter" class="char-counter">0/2000</div>
+         </div>
+      </div>
+   </main>
+</div>
+<!-- Mobile Sidebar Overlay -->
+<div class="sidebar-overlay" id="sidebar-overlay"></div>
+<!-- Rename Modal -->
+<div class="rename-modal" id="rename-modal">
+   <div class="rename-modal-content">
+      <div class="rename-modal-header">
+         <h3>Rename Conversation</h3>
+         <p>Give this conversation a new name</p>
+      </div>
+      <input type="text" id="rename-input" class="rename-input" placeholder="Enter new name..." maxlength="200">
+      <div class="rename-actions">
+         <button class="rename-cancel" id="rename-cancel">Cancel</button>
+         <button class="rename-save" id="rename-save">Save</button>
+      </div>
+   </div>
+</div>
+<!-- Settings Modal -->
+<div class="settings-modal" id="settings-modal">
+   <div class="settings-modal-content">
+      <div class="settings-modal-header">
+         <div>
+            <h3>Custom Instructions</h3>
+            <p>Tell Vidvaan about yourself or how you'd like it to respond</p>
+         </div>
+         <button class="settings-modal-close" id="settings-close">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+               <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/>
+            </svg>
+         </button>
+      </div>
+      <textarea
+         id="settings-instructions"
+         class="settings-textarea"
+         placeholder="Examples:&#10;- My name is Rahul, refer to me by name&#10;- Always respond in Hindi&#10;- I'm a software engineer, be technical&#10;- Keep answers brief and to the point"
+         maxlength="500"
+         rows="7"
+      ></textarea>
+      <div class="settings-char-counter"><span id="settings-char-count">0</span>/500</div>
+      <div class="settings-actions">
+         <button class="settings-cancel" id="settings-cancel">Cancel</button>
+         <button class="settings-save" id="settings-save">Save</button>
+      </div>
+   </div>
+</div>
+<!-- Delete Confirmation Modal -->
+<div class="delete-modal" id="delete-modal">
+    <div class="delete-modal-content">
+        <div class="delete-modal-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/>
+            </svg>
+        </div>
+        <h3>Delete Conversation?</h3>
+        <p>This action cannot be undone. All messages in this conversation will be permanently deleted.</p>
+        <div class="delete-actions">
+            <button class="delete-cancel" id="delete-cancel">Cancel</button>
+            <button class="delete-confirm" id="delete-confirm">Delete</button>
+        </div>
+    </div>
+</div>
+{% endblock %}
+{% block scripts %}
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/dompurify/3.1.6/purify.min.js"></script>
+<script type="module" src="{{ url_for('static', filename='js/chat/main.js') }}"></script>
+{% endblock %}

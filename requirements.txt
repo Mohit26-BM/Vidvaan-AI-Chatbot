@@ -1,0 +1,9 @@
+flask
+flask-login
+flask-sqlalchemy
+groq
+tavily-python
+python-dotenv
+waitress
+gunicorn
+psycopg2-binary

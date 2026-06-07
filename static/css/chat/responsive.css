@@ -1,0 +1,28 @@
+/* responsive.css */
+
+@media (max-width: 640px) {
+    .chat-container {
+        height: 100vh;
+        border-radius: 0;
+        max-width: 100%;
+    }
+
+    .message-content {
+        max-width: 85%;
+    }
+
+    .header-text h2 {
+        font-size: 18px;
+    }
+
+    .error-notification {
+        right: -100%;
+        left: 10px;
+        max-width: none;
+    }
+
+    .error-notification.show {
+        right: 10px;
+        left: 10px;
+    }
+}

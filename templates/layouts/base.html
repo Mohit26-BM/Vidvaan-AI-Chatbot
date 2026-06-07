@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Vidvaan — your personal AI assistant">
+    <title>{% block title %}Vidvaan{% endblock %}</title>
+
+    <!-- Favicon -->
+    <link rel="icon" type="image/svg+xml" href="{{ url_for('static', filename='favicon.svg') }}">
+    
+    <!-- Base Styles -->
+    {% block styles %}
+    <!-- Child templates can add their own styles here -->
+    {% endblock %}
+</head>
+<body>
+    <!-- Main Content -->
+    {% block content %}
+    <!-- Child templates provide content here -->
+    {% endblock %}
+    
+    <!-- Flash Messages (for server-side notifications) -->
+    {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+            <div id="flash-messages">
+                {% for category, message in messages %}
+                    <div class="flash-message flash-{{ category }}">
+                        {{ message }}
+                    </div>
+                {% endfor %}
+            </div>
+        {% endif %}
+    {% endwith %}
+    
+    <!-- Base Scripts -->
+    {% block scripts %}
+    <!-- Child templates can add their own scripts here -->
+    {% endblock %}
+    
+    <!-- Flash Message Handler -->
+    <script>
+        // Auto-dismiss flash messages
+        document.addEventListener('DOMContentLoaded', () => {
+            const flashMessages = document.querySelectorAll('.flash-message');
+            flashMessages.forEach(msg => {
+                setTimeout(() => msg.classList.add('show'), 100);
+                setTimeout(() => {
+                    msg.classList.remove('show');
+                    setTimeout(() => msg.remove(), 300);
+                }, 4000);
+            });
+        });
+    </script>
+    
+    <style>
+        /* Flash Messages Styles */
+        #flash-messages {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 9999;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+        
+        .flash-message {
+            padding: 14px 20px;
+            background: rgba(15, 23, 42, 0.95);
+            border-radius: 10px;
+            color: white;
+            font-size: 0.875rem;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+            opacity: 0;
+            transform: translateX(400px);
+            transition: all 0.3s ease;
+            max-width: 400px;
+        }
+        
+        .flash-message.show {
+            opacity: 1;
+            transform: translateX(0);
+        }
+        
+        .flash-success {
+            border: 1px solid #10b981;
+            background: rgba(16, 185, 129, 0.1);
+        }
+        
+        .flash-error {
+            border: 1px solid #ef4444;
+            background: rgba(239, 68, 68, 0.1);
+        }
+        
+        .flash-info {
+            border: 1px solid #6366f1;
+            background: rgba(99, 102, 241, 0.1);
+        }
+        
+        .flash-warning {
+            border: 1px solid #f59e0b;
+            background: rgba(245, 158, 11, 0.1);
+        }
+    </style>
+</body>
+</html>

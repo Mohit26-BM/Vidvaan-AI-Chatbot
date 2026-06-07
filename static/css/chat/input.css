@@ -1,0 +1,97 @@
+/* input.css */
+
+.input-area {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    padding: 16px 20px 20px;
+    background: var(--bg-app);
+    border-top: 1px solid var(--border);
+}
+
+.input-row {
+    display: flex;
+    gap: 10px;
+    align-items: flex-end;
+}
+
+textarea#user-input {
+    flex: 1;
+    padding: 12px 16px;
+    background: var(--bg-surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-md);
+    color: var(--text-primary);
+    font-size: 15px;
+    font-family: inherit;
+    outline: none;
+    transition: border-color 0.2s, box-shadow 0.2s;
+    resize: none;
+    min-height: 48px;
+    max-height: 160px;
+    line-height: 1.5;
+    overflow-y: auto;
+}
+
+textarea#user-input::placeholder {
+    color: var(--text-muted);
+}
+
+textarea#user-input:focus {
+    border-color: var(--border-focus);
+    box-shadow: 0 0 0 3px var(--accent-glow);
+}
+
+textarea#user-input:disabled {
+    opacity: 0.45;
+    cursor: not-allowed;
+}
+
+.char-counter {
+    font-size: 11px;
+    color: var(--text-muted);
+    text-align: right;
+}
+
+.char-counter.exceeded {
+    color: var(--error);
+    font-weight: 600;
+}
+
+/* Send button */
+#send-btn {
+    width: 44px;
+    height: 44px;
+    background: var(--accent) !important;
+    border: none;
+    border-radius: var(--radius-md);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background 0.2s, transform 0.15s, box-shadow 0.2s;
+    color: white;
+    flex-shrink: 0;
+}
+
+#send-btn:hover:not(:disabled) {
+    background: var(--accent-hover) !important;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 16px var(--accent-glow);
+}
+
+#send-btn:active:not(:disabled) { transform: translateY(0); }
+
+#send-btn svg {
+    width: 20px !important;
+    height: 20px !important;
+}
+
+#send-btn:disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+}
+
+#send-btn.loading svg {
+    animation: spin 1s linear infinite;
+}

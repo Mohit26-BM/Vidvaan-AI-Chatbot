@@ -1,0 +1,139 @@
+{% extends "layouts/auth-base.html" %}
+{% block title %}Sign Up - AI Assistant{% endblock %}
+{% block styles %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/auth/signup.css') }}">
+{% endblock %}
+{% block content %}
+<div class="auth-container">
+
+  <!-- ── Left panel ────────────────────────────────── -->
+  <div class="auth-visual">
+    <div class="visual-content">
+
+      <!-- Brand -->
+      <div class="brand">
+        <div class="brand-icon">
+          <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 24 24">
+            <path d="M2 3h20v14H6l-4 4V3z"/>
+          </svg>
+        </div>
+        <span class="brand-name">AI Assistant</span>
+      </div>
+
+      <h1 class="visual-headline">Start building<br><span>smarter.</span></h1>
+      <p class="visual-sub">Free forever. No credit card needed. Your conversations are private and saved automatically.</p>
+
+      <!-- Stat cards -->
+      <div class="stat-cards">
+        <div class="stat-card">
+          <div class="stat-value">70B</div>
+          <div class="stat-label">Parameter model</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-value">128k</div>
+          <div class="stat-label">Token context</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-value">Free</div>
+          <div class="stat-label">No credit card</div>
+        </div>
+      </div>
+
+      <!-- Feature bullets -->
+      <div class="features">
+        <div class="feature-item"><span class="feature-dot"></span>Instant answers with full markdown formatting</div>
+        <div class="feature-item"><span class="feature-dot"></span>Multiple conversations, organised automatically</div>
+        <div class="feature-item"><span class="feature-dot"></span>Temporary chat mode — nothing stored</div>
+        <div class="feature-item"><span class="feature-dot"></span>Copy code with one click</div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ── Right panel ───────────────────────────────── -->
+  <div class="auth-form-container">
+    <div class="auth-form">
+
+      <!-- Mobile-only brand -->
+      <div class="form-brand">
+        <div class="form-brand-icon">
+          <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 24 24">
+            <path d="M2 3h20v14H6l-4 4V3z"/>
+          </svg>
+        </div>
+        <span class="form-brand-name">AI Assistant</span>
+      </div>
+
+      <div class="form-header">
+        <h2>Create your account</h2>
+        <p>Get started in under a minute</p>
+      </div>
+
+      <form method="POST" id="signup-form">
+        <div class="form-group">
+          <label for="username">Username</label>
+          <input type="text" id="username" name="username"
+                 placeholder="coolname" required minlength="3"
+                 autocomplete="username">
+        </div>
+        <div class="form-group">
+          <label for="email">Email</label>
+          <input type="email" id="email" name="email"
+                 placeholder="you@example.com" required
+                 autocomplete="email">
+        </div>
+        <div class="form-group">
+          <label for="password">Password</label>
+          <input type="password" id="password" name="password"
+                 placeholder="••••••••" required minlength="8"
+                 autocomplete="new-password">
+          <div class="strength-row">
+            <div id="password-strength" class="password-strength">
+              <div class="strength-bar"></div>
+            </div>
+            <span id="strength-label" class="strength-label"></span>
+          </div>
+          <ul class="password-requirements" id="pw-requirements">
+            <li id="req-length" class="req-item">At least 8 characters</li>
+            <li id="req-lower"  class="req-item">One lowercase letter</li>
+            <li id="req-upper"  class="req-item">One uppercase letter</li>
+            <li id="req-number" class="req-item">One number</li>
+          </ul>
+        </div>
+        <div class="form-group">
+          <label for="confirm-password">Confirm password</label>
+          <input type="password" id="confirm-password" name="confirm_password"
+                 placeholder="••••••••" required
+                 autocomplete="new-password">
+        </div>
+        <div class="form-group checkbox-group">
+          <label class="checkbox-label">
+            <input type="checkbox" id="terms" name="terms" required>
+            <span class="checkbox-text">I agree to the <a href="#">Terms</a> &amp; <a href="#">Privacy Policy</a></span>
+          </label>
+        </div>
+        <button type="submit" id="submit-btn" class="submit-btn">Create account</button>
+      </form>
+
+      <div class="form-footer">
+        <p>Already have an account? <a href="{{ url_for('login_page') }}">Sign in</a></p>
+      </div>
+
+      <div class="divider"><span>or</span></div>
+
+      <a href="{{ url_for('demo_page') }}" class="demo-btn">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <polygon points="5 3 19 12 5 21 5 3"/>
+        </svg>
+        Try the demo — no account needed
+      </a>
+
+    </div>
+  </div>
+
+</div>
+<div id="toast" class="toast"></div>
+{% endblock %}
+{% block scripts %}
+<script type="module" src="{{ url_for('static', filename='js/auth/signup.js') }}"></script>
+{% endblock %}

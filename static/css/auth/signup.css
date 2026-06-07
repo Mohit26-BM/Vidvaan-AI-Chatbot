@@ -1,0 +1,114 @@
+/* signup.css — shares design tokens with login.css */
+
+@import url('login.css');
+
+/* ── Stat cards (signup-only) ────────────────────── */
+.stat-cards {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 10px;
+    margin-bottom: 32px;
+}
+
+.stat-card {
+    background: var(--elevated);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 16px 12px;
+    text-align: center;
+}
+
+.stat-value {
+    font-size: 1.4rem;
+    font-weight: 800;
+    color: var(--t1);
+    letter-spacing: -0.02em;
+    margin-bottom: 4px;
+    background: linear-gradient(135deg, #a78bfa, #7c3aed);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+.stat-label {
+    font-size: 0.7rem;
+    color: var(--t3);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    font-weight: 600;
+}
+
+/* ── Password strength (signup-only) ─────────────── */
+.strength-row {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-top: 8px;
+}
+
+.password-strength {
+    flex: 1;
+    height: 3px;
+    background: var(--elevated);
+    border-radius: 2px;
+    overflow: hidden;
+}
+
+.strength-bar {
+    height: 100%;
+    width: 0%;
+    transition: width 0.3s ease, background 0.3s ease;
+}
+
+.password-strength.weak   .strength-bar { width: 33%; background: var(--error); }
+.password-strength.fair   .strength-bar { width: 66%; background: #fbbf24; }
+.password-strength.strong .strength-bar { width: 100%; background: var(--success); }
+
+.strength-label {
+    font-size: 0.72rem;
+    font-weight: 700;
+    min-width: 38px;
+    text-align: right;
+}
+
+.strength-label.weak   { color: var(--error); }
+.strength-label.fair   { color: #fbbf24; }
+.strength-label.strong { color: var(--success); }
+
+/* Requirements checklist */
+.password-requirements {
+    list-style: none;
+    margin-top: 10px;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 4px 12px;
+}
+
+.req-item {
+    font-size: 0.72rem;
+    color: var(--t3);
+    padding-left: 15px;
+    position: relative;
+    transition: color 0.2s;
+}
+
+.req-item::before {
+    content: "○";
+    position: absolute;
+    left: 0;
+    font-size: 0.65rem;
+    line-height: 1.4;
+}
+
+.req-item.met   { color: var(--success); }
+.req-item.met::before   { content: "✓"; }
+.req-item.unmet { color: var(--error); }
+.req-item.unmet::before { content: "✗"; }
+
+/* Terms link colour override */
+.checkbox-text a {
+    color: var(--accent);
+    text-decoration: none;
+}
+
+.checkbox-text a:hover { color: #a78bfa; }
